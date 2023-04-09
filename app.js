@@ -63,7 +63,7 @@ app.get('/bsmzd/id',(req,res)=>{
     // console.log(word[req.query.id])
 });
 
-app.listen(2008, ()=> {
-    console.log('App listening on port 2008!')
+app.listen(2009, ()=> {
+    console.log('App listening on port 2009!')
 });
 
