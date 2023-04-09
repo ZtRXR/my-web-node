@@ -1,5 +1,11 @@
+const express = require('express')
+const app = express()
 const fs = require("fs");
 const path = require("path");
+const cors = require('cors')
+
+app.use(cors())
+
 let word = [];
 
 try {
@@ -9,4 +15,55 @@ try {
 } catch (err) {
     console.error(err);
 }
+
+app.get('/bsmzd/search',(req,res)=>{
+    // console.log('[From]',req.ip,'[Get]',req.query.w);
+    if(!(
+        req.query.w
+        &&req.query.fuc
+    )){
+        res.send({
+            err:true,
+        });
+        return;
+    }
+    //处理错误结束
+    let ret = {
+
+    };
+    let arr = []
+    if(req.query.fuc === 'bsm'){
+        for(let i =0 ; i<word.length; i++){
+            if (word[i].bsm.startsWith(req.query.w)){
+                arr.push({hz:word[i].hz,id:i})
+            }
+        }
+    }else if (req.query.fuc==='hz'){
+        for(let i =0 ; i<word.length; i++){
+            if (word[i].hz.includes(req.query.w)||req.query.w.includes(word[i].hz)){
+                arr.push({hz:word[i].hz,id:i});
+            }
+        }
+    }else{
+        res.status(404).send({});
+    }
+
+    ret.arr=arr;
+
+    // console.log(req.ip,ret)
+    res.send(ret);
+});
+
+app.get('/bsmzd/id',(req,res)=>{
+    if (!req.query.id){
+        res.status(404).send({});
+        return;
+    }
+    res.send(word[req.query.id]);
+    // console.log(word[req.query.id])
+});
+
+app.listen(2008, ()=> {
+    console.log('App listening on port 2008!')
+});
 
