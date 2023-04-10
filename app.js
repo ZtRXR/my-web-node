@@ -21,7 +21,10 @@ app.get('/bsmzd/search',(req,res)=>{
     if(!(
         req.query.w
         &&req.query.fuc
+        &&req.query.w.length<=51
+        &&req.query.fuc.length<=10
     )){
+        // console.log("err 提交数据审查")
         res.send({
             err:true,
         });
@@ -39,12 +42,15 @@ app.get('/bsmzd/search',(req,res)=>{
             }
         }
     }else if (req.query.fuc==='hz'){
-        for(let i =0 ; i<word.length; i++){
-            if (word[i].hz.includes(req.query.w)||req.query.w.includes(word[i].hz)){
-                arr.push({hz:word[i].hz,id:i});
+        for (let i = 0;i<req.query.w.length;i++){
+            for(let j=0;j<word.length;j++){
+                if (word[j].hz.includes(req.query.w[i])){
+                    arr.push({hz:word[j].hz,id:j});
+                }
             }
         }
     }else{
+        // console.log("err 没有处理的类型程序")
         res.status(404).send({});
     }
 
