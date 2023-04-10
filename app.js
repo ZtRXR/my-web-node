@@ -38,7 +38,11 @@ app.get('/bsmzd/search',(req,res)=>{
     if(req.query.fuc === 'bsm'){
         for(let i =0 ; i<word.length; i++){
             if (word[i].bsm.startsWith(req.query.w)){
-                arr.push({hz:word[i].hz,id:i})
+                if (word[i].bsm===req.query.w){
+                    arr.unshift({hz:word[i].hz,id:i})
+                }else {
+                    arr.push({hz:word[i].hz,id:i})
+                }
             }
         }
     }else if (req.query.fuc==='hz'){
