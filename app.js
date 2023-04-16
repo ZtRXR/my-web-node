@@ -53,9 +53,20 @@ app.get('/bsmzd/search',(req,res)=>{
                 }
             }
         }
+    }else if(req.query.fuc==='bsmI'){
+        for(let i =0 ; i<word.length; i++){
+            if (word[i].bsm.includes(req.query.w)){
+                if (word[i].bsm===req.query.w){
+                    arr.unshift({hz:word[i].hz,id:i})
+                }else {
+                    arr.push({hz:word[i].hz,id:i})
+                }
+            }
+        }
     }else{
         // console.log("err 没有处理的类型程序")
         res.status(404).send({});
+        return;
     }
 
     ret.arr=arr;
